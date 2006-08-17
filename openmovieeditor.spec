@@ -1,5 +1,5 @@
 
-%bcond_with	ntsc # Use NTSC framerate, 44100 audio
+%bcond_with	ntsc # Use NTSC framerate
 
 Summary:	A Non Linear Movie Editor
 Name:		openmovieeditor
@@ -12,7 +12,7 @@ Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
 # Source0-md5:	f460529700944c6e4d90efb4b5a5feaa
 Patch0:		%{name}-configure.diff
 Patch1:		%{name}-configure.ac.diff
-Patch2:		%{name}-framerate.spec
+Patch2:		%{name}-framerate.patch
 BuildRequires:	faac
 BuildRequires:	faad2-devel
 BuildRequires:	ffmpeg-devel
