@@ -1,0 +1,244 @@
+diff -ur openmovieeditor-0.0.20060712-o/src/Codecs.cxx openmovieeditor-0.0.20060712/src/Codecs.cxx
+--- openmovieeditor-0.0.20060712-o/src/Codecs.cxx	2006-06-25 12:21:27.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/Codecs.cxx	2006-08-17 10:32:25.000000000 -0600
+@@ -313,7 +313,7 @@
+ void CodecParameters::set( quicktime_t* qt, int w, int h )
+ {
+ 	lqt_add_audio_track( qt, 2, 48000, 16, m_currentAudioCodec->codecInfo );
+-	lqt_add_video_track( qt, w, h, 1200, 30000, m_currentVideoCodec->codecInfo ); // 30000 / 1200 == 25
++	lqt_add_video_track( qt, w, h, 1001, 30000, m_currentVideoCodec->codecInfo ); // 30000 / 1200 == 25
+ 
+ 	param_node* p;
+ 	for ( p = m_currentAudioCodec->parameters; p; p = p->next ) {
+diff -ur openmovieeditor-0.0.20060712-o/src/nle.cxx openmovieeditor-0.0.20060712/src/nle.cxx
+--- openmovieeditor-0.0.20060712-o/src/nle.cxx	2006-07-10 16:06:42.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/nle.cxx	2006-08-17 10:37:32.000000000 -0600
+@@ -36,7 +36,7 @@
+ if ( dlg.go && strcmp( "", dlg.export_filename->value() ) != 0 ) {
+ 	ProgressDialog pDlg( "Rendering Project" );
+ 	render_frame_size* fs = (render_frame_size*)dlg.frameSize();
+-	nle::Renderer ren( dlg.export_filename->value(), fs->x, fs->y, 25, 48000, &cp );
++	nle::Renderer ren( dlg.export_filename->value(), fs->x, fs->y, 30, 48000, &cp );
+ 
+ 	/* stop playback before starting to render... */
+ 	g_playButton->label( "@>" );
+@@ -777,12 +777,12 @@
+ };
+ 
+ Fl_Menu_Item EncodeDialog::menu_Framerate[] = {
+- {"25 (PAL)", 0,  0, 0, 0, 0, 0, 14, 56},
++ {"30 (NTSC)", 0,  0, 0, 0, 0, 0, 14, 56},
+  {0,0,0,0,0,0,0,0,0}
+ };
+ 
+ Fl_Menu_Item EncodeDialog::menu_frame_size_choice[] = {
+- {"720x576", 0,  0, (void*)(&fs720x576), 0, 0, 0, 14, 56},
++ {"720x480", 0,  0, (void*)(&fs720x480), 0, 0, 0, 14, 56},
+  {"360x288", 0,  0, (void*)(&fs360x288), 0, 0, 0, 14, 56},
+  {"640x480", 0,  0, (void*)(&fs640x480), 0, 0, 0, 14, 56},
+  {"320x240", 0,  0, (void*)(&fs320x240), 0, 0, 0, 14, 56},
+diff -ur openmovieeditor-0.0.20060712-o/src/nle.fl openmovieeditor-0.0.20060712/src/nle.fl
+--- openmovieeditor-0.0.20060712-o/src/nle.fl	2006-07-10 16:06:41.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/nle.fl	2006-08-17 10:38:40.000000000 -0600
+@@ -42,7 +42,7 @@
+ if ( dlg.go && strcmp( "", dlg.export_filename->value() ) != 0 ) {
+ 	ProgressDialog pDlg( "Rendering Project" );
+ 	render_frame_size* fs = (render_frame_size*)dlg.frameSize();
+-	nle::Renderer ren( dlg.export_filename->value(), fs->x, fs->y, 25, 48000, &cp );
++	nle::Renderer ren( dlg.export_filename->value(), fs->x, fs->y, 30, 48000, &cp );
+ 
+ 	/* stop playback before starting to render... */
+ 	g_playButton->label( "@>" );
+@@ -456,7 +456,7 @@
+         xywh {145 130 205 25} down_box BORDER_BOX
+       } {
+         menuitem {} {
+-          label {25 (PAL)}
++          label {30 (NTSC)}
+           xywh {0 0 100 20}
+         }
+       }
+@@ -465,8 +465,8 @@
+         xywh {145 160 205 25} down_box BORDER_BOX
+       } {
+         menuitem {} {
+-          label 720x576
+-          user_data {&fs720x576}
++          label 720x480
++          user_data {&fs720x480}
+           xywh {0 0 100 20}
+         }
+         menuitem {} {
+diff -ur openmovieeditor-0.0.20060712-o/src/Renderer.cxx openmovieeditor-0.0.20060712/src/Renderer.cxx
+--- openmovieeditor-0.0.20060712-o/src/Renderer.cxx	2006-06-23 11:54:29.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/Renderer.cxx	2006-08-17 10:27:17.000000000 -0600
+@@ -31,7 +31,7 @@
+ #include "Codecs.H"
+ #include "render_helper.H"
+ 
+-render_frame_size fs720x576 = { 720, 576 };
++render_frame_size fs720x480 = { 720, 480 };
+ render_frame_size fs360x288 = { 360, 288 };
+ render_frame_size fs640x480 = { 640, 480 };
+ render_frame_size fs320x240 = { 320, 240 };
+@@ -81,7 +81,7 @@
+ 	}
+ #endif
+ 	codec = codecs[22];
+-	lqt_add_video_track( qt, m_w, m_h, 1200, 30000, codec ); // Was bedeuted 1001 zum Teufel? => 30000 / 1001 == 29.97
++	lqt_add_video_track( qt, m_w, m_h, 1001, 30000, codec ); // Was bedeuted 1001 zum Teufel? => 30000 / 1001 == 29.97
+ 	                                                         // 30000 / 1200 == 25
+ 	lqt_destroy_codec_info( codecs );
+ 	lqt_set_cmodel( qt, 0, BC_RGB888 );
+@@ -169,10 +169,10 @@
+ 	}
+ 	
+ 	do {
+-		if ( fcnt >= 1920 ) { // 1601 für NTSC, 1920 für PAL
++		if ( fcnt >= 1601 ) { // 1601 für NTSC, 1920 für PAL
+ 			g_timeline->getBlendedFrame( &enc_frame );
+ 			quicktime_encode_video( qt, enc_frame.rows, 0 );
+-			fcnt -= 1920;
++			fcnt -= 1601;
+ 			current_frame++;
+ 			if ( l ) {
+ 				if ( l->progress( current_frame * 100 / length ) ) {
+diff -ur openmovieeditor-0.0.20060712-o/src/Renderer.H openmovieeditor-0.0.20060712/src/Renderer.H
+--- openmovieeditor-0.0.20060712-o/src/Renderer.H	2006-05-15 14:55:01.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/Renderer.H	2006-08-17 10:39:13.000000000 -0600
+@@ -29,7 +29,7 @@
+ 	int y;
+ } render_frame_size;
+ 
+-extern render_frame_size fs720x576;
++extern render_frame_size fs720x480;
+ extern render_frame_size fs360x288;
+ extern render_frame_size fs640x480;
+ extern render_frame_size fs320x240;
+diff -ur openmovieeditor-0.0.20060712-o/src/SimplePlaybackCore.cxx openmovieeditor-0.0.20060712/src/SimplePlaybackCore.cxx
+--- openmovieeditor-0.0.20060712-o/src/SimplePlaybackCore.cxx	2006-06-21 14:28:34.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/SimplePlaybackCore.cxx	2006-08-17 10:36:17.000000000 -0600
+@@ -230,13 +230,13 @@
+ 	/* Calculate frame. */
+ 	jack_transport_query(jack_client, &jack_position);
+ 	jack_time = jack_position.frame / (double) jack_position.frame_rate;
+-	frame = (int) rint(25.0 * jack_time );
++	frame = (int) rint(30.0 * jack_time );
+ 	return(frame);
+ }
+ 
+ void jack_reposition(int vframe)
+ {
+-	jack_nframes_t frame= 48000/25 * vframe;
++	jack_nframes_t frame= 48000/30 * vframe;
+ 	if (jack_client)
+ 		jack_transport_locate (jack_client, frame);
+ }
+@@ -273,7 +273,7 @@
+ }
+ void SimplePlaybackCore::play()
+ {
+-	int scrublen = 3*1920;  // TODO: get from preferences :  scrub_freq = sample_rate/scrublen   
++	int scrublen = 3*1601;  // TODO: get from preferences :  scrub_freq = sample_rate/scrublen   
+ 				// good values for scrub_freq are 1..50 Hz
+ 				// scrub length is rounded up to next multiple of jack buffer size.
+ 	if ( m_active ) {
+@@ -288,7 +288,7 @@
+ 		m_scrubmax = (jack_bufsiz!=0)?(int)ceil(scrublen/jack_bufsiz):1;
+ 
+ 		if (!g_use_jack_transport) {
+-			m_audioPosition = m_currentFrame * ( 48000 / 25 ); 
++			m_audioPosition = m_currentFrame * ( 48000 / 30 ); 
+ 		} else {
+ 			jack_reposition(m_currentFrame);
+ 
+@@ -306,7 +306,7 @@
+ 	} else { // portaudio
+ 		m_currentFrame = g_timeline->m_seekPosition;
+ 		m_lastFrame = g_timeline->m_seekPosition;
+-		m_audioPosition = m_currentFrame * ( 48000 / 25 );
++		m_audioPosition = m_currentFrame * ( 48000 / 30 );
+ 		m_audioReader->sampleseek(1, m_audioPosition); // set absolute audio sample start position
+ 	}
+ 
+@@ -407,9 +407,9 @@
+ 	m_audioReader->sampleseek(0,r); // set relative sample position;
+ 	m_audioPosition += r;
+ 	pthread_mutex_lock( &condition_mutex );
+-	m_currentFrame = m_audioPosition / ( 48000 / 25 ); //FIXME: highly dependent from 'frames' :(
++	m_currentFrame = m_audioPosition / ( 48000 / 30 ); //FIXME: highly dependent from 'frames' :(
+ 	pthread_cond_signal( &condition_cond );
+-	/*if ( m_audioPosition / ( 48000 / 25 ) > m_currentFrame ) {
++	/*if ( m_audioPosition / ( 48000 / 30 ) > m_currentFrame ) {
+ 		//cout << "m_audioPosition: " << m_audioPosition << " m_currentFrame: " << m_currentFrame << " frames: " << frames << endl;
+ 		m_currentFrame++;
+ 		pthread_cond_signal( &condition_cond );
+@@ -448,7 +448,7 @@
+ 	} else if (jack_connected()) { // jack audio with local transport
+ 		// FIXME: for larger jack buffer sizes, this can become inaccurate due to rounding
+ 		// issues. -> do something similar as the portaudio drift sync...
+-		m_lastFrame = (int64_t)rintl(m_audioPosition*25/48000);
++		m_lastFrame = (int64_t)rintl(m_audioPosition*30/48000);
+ 	} else { // portaudio
+ 		m_lastFrame++;
+ 		pthread_mutex_lock( &condition_mutex );
+diff -ur openmovieeditor-0.0.20060712-o/src/Timeline.H openmovieeditor-0.0.20060712/src/Timeline.H
+--- openmovieeditor-0.0.20060712-o/src/Timeline.H	2006-06-27 06:28:20.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/Timeline.H	2006-08-17 10:36:33.000000000 -0600
+@@ -50,7 +50,7 @@
+ 		inline void sampleseek( int mode, int64_t position )
+ 		{
+ 			if (mode) m_samplePosition = position; else m_samplePosition += position;
+-			/* m_playPosition = m_samplePosition*25/48000; m_seekPosition= m_playPosition;*/
++			/* m_playPosition = m_samplePosition*30/48000; m_seekPosition= m_playPosition;*/
+ 		}
+ 		inline int64_t soundLength() { return m_soundLength; }
+ 		bool changed() { return m_changed; }
+diff -ur openmovieeditor-0.0.20060712-o/src/VideoFileFfmpeg.cxx openmovieeditor-0.0.20060712/src/VideoFileFfmpeg.cxx
+--- openmovieeditor-0.0.20060712-o/src/VideoFileFfmpeg.cxx	2006-06-25 06:35:56.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/VideoFileFfmpeg.cxx	2006-08-17 10:32:53.000000000 -0600
+@@ -97,10 +97,10 @@
+ 	//m_formatContext->streams[m_videoStream]->r_frame_rate;
+ 	//time_base
+ 	m_framerate = av_q2d( m_formatContext->streams[m_videoStream]->r_frame_rate );
+-	if ( m_framerate < 24.9 || m_framerate > 25.1 ) {
++	if ( m_framerate < 29 || m_framerate > 31 ) {
+ 		CLEAR_ERRORS();
+ 		cout << "Wrong Framerate: " << m_framerate << endl;
+-		ERROR_DETAIL( "Video framerates other than 25 are not supported" );
++		ERROR_DETAIL( "Video framerates other than 30 are not supported" );
+ 		return;
+ 	}
+ 
+diff -ur openmovieeditor-0.0.20060712-o/src/VideoFileQT.cxx openmovieeditor-0.0.20060712/src/VideoFileQT.cxx
+--- openmovieeditor-0.0.20060712-o/src/VideoFileQT.cxx	2006-05-15 14:55:04.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/VideoFileQT.cxx	2006-08-17 10:37:03.000000000 -0600
+@@ -53,10 +53,10 @@
+ 		return;
+ 	}
+ 	// check frame rate
+-	if ( quicktime_frame_rate( m_qt, 0 ) < 24.9 || quicktime_frame_rate( m_qt, 0 ) > 25.1 ) {
++	if ( quicktime_frame_rate( m_qt, 0 ) < 29.5 || quicktime_frame_rate( m_qt, 0 ) > 31.1 ) {
+ 		CLEAR_ERRORS();
+ 		cout << "Wrong Framerate: " << quicktime_frame_rate( m_qt, 0 ) << endl;
+-		ERROR_DETAIL( "Video framerates other than 25 are not supported" );
++		ERROR_DETAIL( "Video framerates other than 30 are not supported" );
+ 		return;
+ 	}
+ 	lqt_set_cmodel( m_qt, 0, BC_RGB888);
+diff -ur openmovieeditor-0.0.20060712-o/src/VideoTrack.cxx openmovieeditor-0.0.20060712/src/VideoTrack.cxx
+--- openmovieeditor-0.0.20060712-o/src/VideoTrack.cxx	2006-06-25 13:43:55.000000000 -0600
++++ openmovieeditor-0.0.20060712/src/VideoTrack.cxx	2006-08-17 10:28:17.000000000 -0600
+@@ -236,10 +236,10 @@
+ 	while ( m_current && m_current->clip->type() != CLIP_TYPE_VIDEO && m_current->clip->type() != CLIP_TYPE_AUDIO ) {
+ 		m_current = m_current->next;
+ 	}
+-	while ( m_currentAudioFadeOver && fade_over_end( m_currentAudioFadeOver ) * 1920 < position + frames  ) { // 48000 / 25 == 1920
++	while ( m_currentAudioFadeOver && fade_over_end( m_currentAudioFadeOver ) * 1601 < position + frames  ) { // 48000 / 25 == 1920
+ 		m_currentAudioFadeOver = m_currentAudioFadeOver->next;
+ 	}
+-	if ( m_currentAudioFadeOver && position > fade_over_start( m_currentAudioFadeOver ) * 1920 ) {
++	if ( m_currentAudioFadeOver && position > fade_over_start( m_currentAudioFadeOver ) * 1601 ) {
+ 		AudioClipBase* ac1 = dynamic_cast<AudioClipBase*>(m_currentAudioFadeOver->clipA);
+ 		AudioClipBase* ac2 = dynamic_cast<AudioClipBase*>(m_currentAudioFadeOver->clipB);
+ 		for ( int i = (frames * 2) - 1; i >= 0; i-- ) {
