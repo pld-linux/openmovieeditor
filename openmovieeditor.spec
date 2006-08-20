@@ -1,25 +1,28 @@
-
-%bcond_with	ntsc # Use NTSC framerate
-
+#
+# Conditional build: 
+%bcond_with	ntsc	# Use NTSC framerate
+#
 Summary:	A Non Linear Movie Editor
+Summary(pl):	Nieliniowy edytor filmów
 Name:		openmovieeditor
 Version:	0.0.20060712
 Release:	1
 License:	GPL
 Group:		Applications/Multimedia
-URL:		http://openmovieeditor.sourceforge.net
 Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
 # Source0-md5:	f460529700944c6e4d90efb4b5a5feaa
 Patch0:		%{name}-configure.diff
 Patch1:		%{name}-configure.ac.diff
 Patch2:		%{name}-framerate.patch
-BuildRequires:	faac
+URL:		http://openmovieeditor.sourceforge.net/
+BuildRequires:	faac-devel
 BuildRequires:	faad2-devel
 BuildRequires:	ffmpeg-devel
 BuildRequires:	fltk-devel
 BuildRequires:	fltk-gl-devel
 BuildRequires:	gavl-devel >= 0.2.4
 BuildRequires:	jack-audio-connection-kit-devel >= 0.101
+# lame-libs-devel? (binary shouldn't be buildrequired)
 BuildRequires:	lame
 BuildRequires:	libjpeg-devel
 BuildRequires:	libogg-devel
@@ -30,6 +33,7 @@ BuildRequires:	libtheora-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	libx264-devel
 BuildRequires:	portaudio-devel
+BuildRequires:	rpmbuild(macros) >= 1.315
 BuildRequires:	xvid-devel
 BuildRequires:	zlib-devel
 Requires:	faac
@@ -41,16 +45,19 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define   filterout_ld  (-Wl,)?--as-needed
 
 %description
-The Open Movie Editor ... is a Non Linear Movie Editor, it is in it's
+The Open Movie Editor... is a Non Linear Movie Editor, it is in it's
 very early stages of development.
 
 Open Movie Editor is designed to be a simple tool, that provides basic
 movie making capabilites. It aims to be powerful enough for the
 amateur movie artist, yet easy to use.
 
-See http://openmovieeditor.sourceforge.net/
-
-Author Richard Spindler <richard.spindler@gmail.com>
+%description -l pl
+Open Movie Editor to nieliniowy edytor filmów, bêd±cy we wczesnym
+stadium rozwoju. Jest projektowany jako proste narzêdzie
+udostêpniaj±ce podstawowe mo¿liwo¶ci tworzenia filmów. Jednak ma byæ
+wystarczaj±co potê¿ny dla autorów amatorskich filmów, a jednocze¶nie
+³atwy w u¿yciu.
 
 %prep
 %setup -q
@@ -61,14 +68,14 @@ Author Richard Spindler <richard.spindler@gmail.com>
 %endif
 
 %build
-%configure \
-	--prefix=%{_prefix}
-%__make
+%configure
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%__make install-strip \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # icon
@@ -88,14 +95,15 @@ Icon=openmovieeditor.png
 DocPath=
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/applications
-install %{name}.desktop $RPM_BUILD_ROOT%{_datadir}/applications
+install -d $RPM_BUILD_ROOT%{_desktopdir}
+install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
 %clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING INSTALL NEWS README TODO
+%doc AUTHORS NEWS README TODO
 %attr(755,root,root) %{_bindir}/*
 %{_pixmapsdir}/openmovieeditor.png
 %{_desktopdir}/%{name}.desktop
