@@ -3,7 +3,7 @@
 %bcond_with	ntsc	# Use NTSC framerate
 #
 Summary:	A Non Linear Movie Editor
-Summary(pl.UTF-8):   Nieliniowy edytor filmów
+Summary(pl.UTF-8):	Nieliniowy edytor filmów
 Name:		openmovieeditor
 Version:	0.0.20060712
 Release:	1
