@@ -3,7 +3,7 @@
 %bcond_with	ntsc	# Use NTSC framerate
 #
 Summary:	A Non Linear Movie Editor
-Summary(pl):	Nieliniowy edytor filmów
+Summary(pl.UTF-8):   Nieliniowy edytor filmÃ³w
 Name:		openmovieeditor
 Version:	0.0.20060712
 Release:	1
@@ -52,12 +52,12 @@ Open Movie Editor is designed to be a simple tool, that provides basic
 movie making capabilites. It aims to be powerful enough for the
 amateur movie artist, yet easy to use.
 
-%description -l pl
-Open Movie Editor to nieliniowy edytor filmów, bêd±cy we wczesnym
-stadium rozwoju. Jest projektowany jako proste narzêdzie
-udostêpniaj±ce podstawowe mo¿liwo¶ci tworzenia filmów. Jednak ma byæ
-wystarczaj±co potê¿ny dla autorów amatorskich filmów, a jednocze¶nie
-³atwy w u¿yciu.
+%description -l pl.UTF-8
+Open Movie Editor to nieliniowy edytor filmÃ³w, bÄ™dÄ…cy we wczesnym
+stadium rozwoju. Jest projektowany jako proste narzÄ™dzie
+udostÄ™pniajÄ…ce podstawowe moÅ¼liwoÅ›ci tworzenia filmÃ³w. Jednak ma byÄ‡
+wystarczajÄ…co potÄ™Å¼ny dla autorÃ³w amatorskich filmÃ³w, a jednoczeÅ›nie
+Å‚atwy w uÅ¼yciu.
 
 %prep
 %setup -q
