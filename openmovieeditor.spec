@@ -11,10 +11,12 @@ License:	GPL
 Group:		Applications/Multimedia
 Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
 # Source0-md5:	f460529700944c6e4d90efb4b5a5feaa
-Patch0:		%{name}-configure.diff
-Patch1:		%{name}-configure.ac.diff
+Patch0:		%{name}-configure.ac.diff
+Patch1:		%{name}-as-needed.patch
 Patch2:		%{name}-framerate.patch
 URL:		http://openmovieeditor.sourceforge.net/
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	faac-devel
 BuildRequires:	faad2-devel
 BuildRequires:	ffmpeg-devel
@@ -42,8 +44,6 @@ Requires:	fltk
 Requires:	lame
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define   filterout_ld  (-Wl,)?--as-needed
-
 %description
 The Open Movie Editor... is a Non Linear Movie Editor, it is in it's
 very early stages of development.
@@ -61,13 +61,17 @@ wystarczająco potężny dla autorów amatorskich filmów, a jednocześnie
 
 %prep
 %setup -q
-%patch0
-%patch1
+%patch0 -p0
+%patch1 -p1
 %if %{with ntsc}
 %patch2 -p1
 %endif
 
 %build
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure
 
 %{__make}
