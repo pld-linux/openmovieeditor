@@ -1,0 +1,79 @@
+diff -Nur openmovieeditor-0.0.20060712.orig/configure.ac openmovieeditor-0.0.20060712.as-needed/configure.ac
+--- openmovieeditor-0.0.20060712.orig/configure.ac	2007-05-19 18:16:08.000000000 +0000
++++ openmovieeditor-0.0.20060712.as-needed/configure.ac	2007-05-19 18:16:08.000000000 +0000
+@@ -53,18 +53,18 @@
+ PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,,
+   AC_MSG_ERROR([*** libsndfile 1.0.0 not found - this program requires libsndfile >= 1.0.0 http://www.mega-nerd.com/libsndfile/ ***]))
+ CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS"
+-LDFLAGS="$LDFLAGS $SNDFILE_LIBS"
++LIBS="$LIBS $SNDFILE_LIBS"
+ 
+ PKG_CHECK_MODULES(GAVL, gavl = 0.2.4,,
+   AC_MSG_ERROR([*** gavl 0.2.4 not found - this program requires the gmerlin audio
+   video library = 0.2.4 http://gmerlin.sourceforge.net/ ***]))
+ CPPFLAGS="$CPPFLAGS $GAVL_CFLAGS"
+-LDFLAGS="$LDFLAGS $GAVL_LIBS"
++LIBS="$LIBS $GAVL_LIBS"
+ 
+ PKG_CHECK_MODULES(LIBQUICKTIME, libquicktime >= 0.9.7,,
+   AC_MSG_ERROR([*** libquicktime 0.9.7 not found - this program requires libquicktime >= 0.9.7 http://libquicktime.sourceforge.net/ ***]))
+ CPPFLAGS="$CPPFLAGS $LIBQUICKTIME_CFLAGS"
+-LDFLAGS="$LDFLAGS $LIBQUICKTIME_LIBS"
++LIBS="$LIBS $LIBQUICKTIME_LIBS"
+ 
+ HAVE_AVCODEC=false
+ PKG_CHECK_MODULES(AVCODEC, libavcodec, [HAVE_AVCODEC=true], [true])
+@@ -72,7 +72,7 @@
+   AC_MSG_WARN([*** libavcodec not found])
+ else
+   CPPFLAGS="$CPPFLAGS $AVCODEC_CFLAGS -DAVCODEC"
+-  LDFLAGS="$LDFLAGS $AVCODEC_LIBS"
++  LIBS="$LIBS $AVCODEC_LIBS"
+ fi
+ 
+ if test x$HAVE_AVCODEC = xfalse; then
+@@ -82,7 +82,7 @@
+     AC_MSG_WARN([*** libavcodec_acl not found])
+   else
+     CPPFLAGS="$CPPFLAGS $AVCODEC_ACL_CFLAGS -DAVCODEC"
+-    LDFLAGS="$LDFLAGS $AVCODEC_ACL_LIBS"
++    LIBS="$LIBS $AVCODEC_ACL_LIBS"
+   fi
+ fi
+ 
+@@ -92,7 +92,7 @@
+   AC_MSG_WARN([*** libavformat not found])
+ else
+   CPPFLAGS="$CPPFLAGS $AVFORMAT_CFLAGS"
+-  LDFLAGS="$LDFLAGS $AVFORMAT_LIBS"
++  LIBS="$LIBS $AVFORMAT_LIBS"
+ fi
+ 
+ if test x$HAVE_AVFORMAT = xfalse; then
+@@ -102,7 +102,7 @@
+     AC_MSG_WARN([*** libavformat_acl not found])
+   else
+     CPPFLAGS="$CPPFLAGS $AVFORMAT_ACL_CFLAGS"
+-    LDFLAGS="$LDFLAGS $AVFORMAT_ACL_LIBS"
++    LIBS="$LIBS $AVFORMAT_ACL_LIBS"
+   fi
+ fi
+ 
+@@ -110,7 +110,7 @@
+ AC_CHECK_LIB(jack, main, [ac_jack_lib="yes"], [ac_jack_lib="no"])
+ AC_CHECK_HEADER(jack/jack.h, [ac_jack_h="yes"], [ac_jack_h="no"])
+ if test "x$ac_jack_lib$ac_jack_h" = "xyesyes"; then
+-   LDFLAGS="$LDFLAGS -ljack"
++   LIBS="$LIBS -ljack"
+ else 
+    AC_MSG_ERROR([*** You need JACK audio library (libjack-dev) installed.  http://jackit.sf.net/])
+ fi
+@@ -147,7 +147,7 @@
+ dnl  fi
+ fi
+ CPPFLAGS="$CPPFLAGS $FLTK_CXXFLAGS"
+-LDFLAGS="$LDFLAGS $FLTK_LIBS"
++LIBS="$LIBS $FLTK_LIBS"
+ AC_SUBST(FLTK_CXXFLAGS)
+ AC_SUBST(FLTK_CFLAGS)
+ AC_SUBST(FLTK_LIBS)
