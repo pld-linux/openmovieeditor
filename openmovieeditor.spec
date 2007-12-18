@@ -1,3 +1,6 @@
+# TODO:
+#	- use system portaudio
+#	- check Requires
 #
 # Conditional build: 
 %bcond_with	ntsc	# Use NTSC framerate
@@ -7,7 +10,7 @@ Summary(pl.UTF-8):	Nieliniowy edytor filmów
 Name:		openmovieeditor
 Version:	0.0.20071118
 Release:	1
-License:	GPL
+License:	GPL v2
 Group:		Applications/Multimedia
 Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
 # Source0-md5:	32ed668bf8782eb9c94db1a125678b58
@@ -96,7 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README TODO
+%doc AUTHORS NEWS README TODO doc/images doc/style.css doc/tutorial.html
 %attr(755,root,root) %{_bindir}/*
 %{_pixmapsdir}/openmovieeditor.png
 %{_desktopdir}/%{name}.desktop
