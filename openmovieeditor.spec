@@ -16,27 +16,18 @@ Patch1:		%{name}-framerate.patch
 URL:		http://openmovieeditor.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	faac-devel
-BuildRequires:	faad2-devel
 BuildRequires:	ffmpeg-devel
 BuildRequires:	fltk-devel
 BuildRequires:	fltk-gl-devel
 BuildRequires:	gavl-devel >= 0.2.4
 BuildRequires:	jack-audio-connection-kit-devel >= 0.101
-# lame-libs-devel? (binary shouldn't be buildrequired)
-BuildRequires:	lame
 BuildRequires:	libjpeg-devel
-BuildRequires:	libogg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libquicktime-devel >= 0.9.7
+BuildRequires:	libsamplerate-devel
 BuildRequires:	libsndfile-devel
-BuildRequires:	libtheora-devel
-BuildRequires:	libvorbis-devel
-BuildRequires:	libx264-devel
-BuildRequires:	portaudio-devel
 BuildRequires:	rpmbuild(macros) >= 1.315
-BuildRequires:	xvid-devel
-BuildRequires:	zlib-devel
+BuildRequires:	xorg-lib-libXft-devel
 Requires:	faac
 Requires:	faad2
 Requires:	fltk
