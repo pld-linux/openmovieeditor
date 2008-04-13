@@ -8,12 +8,12 @@
 Summary:	A Non Linear Movie Editor
 Summary(pl.UTF-8):	Nieliniowy edytor filmów
 Name:		openmovieeditor
-Version:	0.0.20071118
+Version:	0.0.20080209
 Release:	1
 License:	GPL v2
 Group:		Applications/Multimedia
 Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
-# Source0-md5:	32ed668bf8782eb9c94db1a125678b58
+# Source0-md5:	528f90d82f05fd0b25168f29e5b33c51
 Patch0:		%{name}-as-needed.patch
 Patch1:		%{name}-framerate.patch
 URL:		http://openmovieeditor.sourceforge.net/
