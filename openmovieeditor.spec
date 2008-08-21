@@ -1,5 +1,4 @@
 # TODO:
-#	- use system portaudio
 #	- check Requires
 #
 # Conditional build: 
@@ -8,27 +7,29 @@
 Summary:	A Non Linear Movie Editor
 Summary(pl.UTF-8):	Nieliniowy edytor filmów
 Name:		openmovieeditor
-Version:	0.0.20080209
+Version:	0.0.20080523
 Release:	1
 License:	GPL v2
 Group:		Applications/Multimedia
 Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
-# Source0-md5:	528f90d82f05fd0b25168f29e5b33c51
+# Source0-md5:	8e5eb353c17365d5dd380b4a1f449a04
 Patch0:		%{name}-as-needed.patch
 Patch1:		%{name}-framerate.patch
 URL:		http://openmovieeditor.sourceforge.net/
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ffmpeg-devel
 BuildRequires:	fltk-devel
 BuildRequires:	fltk-gl-devel
-BuildRequires:	gavl-devel >= 0.2.4
+BuildRequires:	gavl-devel >= 1.0.0
 BuildRequires:	jack-audio-connection-kit-devel >= 0.101
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
-BuildRequires:	libquicktime-devel >= 0.9.7
+BuildRequires:	libquicktime-devel >= 1.0.2
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libsndfile-devel
+BuildRequires:	portaudio-devel >= 19
 BuildRequires:	rpmbuild(macros) >= 1.315
 BuildRequires:	xorg-lib-libXft-devel
 Requires:	faac
