@@ -1,6 +1,6 @@
 --- openmovieeditor-0.0.20071118/configure.ac.orig	2007-12-18 20:55:48.402203456 +0100
 +++ openmovieeditor-0.0.20071118/configure.ac	2007-12-18 20:58:25.378255776 +0100
-@@ -61,23 +61,23 @@
+@@ -53,29 +53,29 @@
  PKG_CHECK_MODULES(SAMPLERATE, samplerate >= 0.1.1,,
    AC_MSG_ERROR([*** libsamplerate not found - this program requires libsamplerate >= 0.1.1 http://www.mega-nerd.com/SRC/ ***]))
  CPPFLAGS="$CPPFLAGS $SAMPLERATE_CFLAGS"
@@ -13,22 +13,29 @@
 -LDFLAGS="$LDFLAGS $SNDFILE_LIBS"
 +LIBS="$LIBS $SNDFILE_LIBS"
  
- PKG_CHECK_MODULES(GAVL, gavl >= 0.2.3,,
-   AC_MSG_ERROR([*** gavl >= 0.2.3 not found - this program requires the gmerlin audio
-   video library >= 0.2.3 http://gmerlin.sourceforge.net/ ***]))
+ PKG_CHECK_MODULES(GAVL, gavl >= 1.0.0,,
+   AC_MSG_ERROR([*** gavl >= 1.0.0 not found - this program requires the gmerlin audio
+   video library >= 1.0.0 http://gmerlin.sourceforge.net/ ***]))
  CPPFLAGS="$CPPFLAGS $GAVL_CFLAGS"
 -LDFLAGS="$LDFLAGS $GAVL_LIBS"
 +LIBS="$LIBS $GAVL_LIBS"
  
- PKG_CHECK_MODULES(LIBQUICKTIME, libquicktime >= 0.9.7,,
-   AC_MSG_ERROR([*** libquicktime 0.9.7 not found - this program requires libquicktime >= 0.9.7 http://libquicktime.sourceforge.net/ ***]))
+ #PKG_CHECK_MODULES(GMERLIN_AVDEC, gmerlin_avdec >= 0.1.7,,
+ #  AC_MSG_ERROR([*** gmerlin_avdec >= 0.1.7 not found - this program requires the gmerlin audio
+ #  video decoder >= 0.1.7 http://gmerlin.sourceforge.net/ ***]))
+ #CPPFLAGS="$CPPFLAGS $GMERLIN_AVDEC_CFLAGS"
+-#LDFLAGS="$LDFLAGS $GMERLIN_AVDEC_LIBS"
++#LIBS="$LIBS $GMERLIN_AVDEC_LIBS"
+ 
+ PKG_CHECK_MODULES(LIBQUICKTIME, libquicktime >= 1.0.2,,
+   AC_MSG_ERROR([*** libquicktime 1.0.2 not found - this program requires libquicktime >= 1.0.2 http://libquicktime.sourceforge.net/ ***]))
  CPPFLAGS="$CPPFLAGS $LIBQUICKTIME_CFLAGS"
 -LDFLAGS="$LDFLAGS $LIBQUICKTIME_LIBS"
 +LIBS="$LIBS $LIBQUICKTIME_LIBS"
  
  HAVE_AVCODEC=false
  PKG_CHECK_MODULES(AVCODEC, libavcodec, [HAVE_AVCODEC=true], [true])
-@@ -80,7 +80,7 @@
+@@ -83,7 +83,7 @@
    AC_MSG_WARN([*** libavcodec not found])
  else
    CPPFLAGS="$CPPFLAGS $AVCODEC_CFLAGS -DAVCODEC"
@@ -37,7 +44,7 @@
  fi
  
  if test x$HAVE_AVCODEC = xfalse; then
-@@ -90,7 +90,7 @@
+@@ -93,7 +93,7 @@
      AC_MSG_WARN([*** libavcodec_acl not found])
    else
      CPPFLAGS="$CPPFLAGS $AVCODEC_ACL_CFLAGS -DAVCODEC"
@@ -46,7 +53,7 @@
    fi
  fi
  
-@@ -100,7 +100,7 @@
+@@ -103,7 +103,7 @@
    AC_MSG_WARN([*** libavformat not found])
  else
    CPPFLAGS="$CPPFLAGS $AVFORMAT_CFLAGS"
@@ -55,7 +62,7 @@
  fi
  
  if test x$HAVE_AVFORMAT = xfalse; then
-@@ -110,7 +110,7 @@
+@@ -113,7 +113,7 @@
      AC_MSG_WARN([*** libavformat_acl not found])
    else
      CPPFLAGS="$CPPFLAGS $AVFORMAT_ACL_CFLAGS"
@@ -64,8 +71,15 @@
    fi
  fi
  
-@@ -118,7 +118,7 @@
- AC_CHECK_LIB(jack, main, [ac_jack_lib="yes"], [ac_jack_lib="no"])
+@@ -129,13 +129,13 @@
+   AC_MSG_WARN([*** libswscale not found])
+ else
+   CPPFLAGS="$CPPFLAGS $SWSCALE_CFLAGS -DSWSCALE"
+-  LDFLAGS="$LDFLAGS $SWSCALE_LIBS"
++  LIBS="$LIBS $SWSCALE_LIBS"
+ fi
+ 
+ PKG_CHECK_MODULES(JACK, jack, ac_jack_lib=yes, ac_jack_lib=no)
  AC_CHECK_HEADER(jack/jack.h, [ac_jack_h="yes"], [ac_jack_h="no"])
  if test "x$ac_jack_lib$ac_jack_h" = "xyesyes"; then
 -   LDFLAGS="$LDFLAGS -ljack"
@@ -73,7 +87,22 @@
  else 
     AC_MSG_ERROR([*** You need JACK audio library (libjack-dev) installed.  http://jackit.sf.net/])
  fi
-@@ -155,7 +155,7 @@
+@@ -143,12 +143,12 @@
+ PKG_CHECK_MODULES(GLIB2, glib-2.0 >= 2.10.3,,
+   AC_MSG_ERROR([*** glib-2.0 not found - this program requires glib >= 2.10.3 ***]))
+ CPPFLAGS="$CPPFLAGS $GLIB2_CFLAGS"
+-LDFLAGS="$LDFLAGS $GLIB2_LIBS"
++LIBS="$LIBS $GLIB2_LIBS"
+ 
+ PKG_CHECK_MODULES(PORTAUDIO19, portaudio-2.0 >= 19,,
+   AC_MSG_ERROR([*** portaudio-2.0 not found - this program requires portaudio >= 19 ***]))
+ CPPFLAGS="$CPPFLAGS $PORTAUDIO19_CFLAGS"
+-LDFLAGS="$LDFLAGS $PORTAUDIO19_LIBS"
++LIBS="$LIBS $PORTAUDIO19_LIBS"
+ 
+  AC_CHECK_HEADER(GL/gl.h,,
+   AC_MSG_ERROR([*** GL/gl.h not found - this program requires OpenGL or compatible (Mesa) Hint: install mesa-common-dev ***]))
+@@ -185,7 +185,7 @@
  dnl  fi
  fi
  CPPFLAGS="$CPPFLAGS $FLTK_CXXFLAGS"
