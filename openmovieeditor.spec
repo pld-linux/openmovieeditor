@@ -23,12 +23,14 @@ BuildRequires:	ffmpeg-devel
 BuildRequires:	fltk-devel
 BuildRequires:	fltk-gl-devel
 BuildRequires:	gavl-devel >= 1.0.0
+BuildRequires:	gmerlin-avdecoder >= 0.1.7
 BuildRequires:	jack-audio-connection-kit-devel >= 0.101
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libquicktime-devel >= 1.0.0
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libsndfile-devel
+BuildRequires:	pkgconfig >= 0.9.0
 BuildRequires:	portaudio-devel >= 19
 BuildRequires:	rpmbuild(macros) >= 1.315
 BuildRequires:	xorg-lib-libXft-devel
