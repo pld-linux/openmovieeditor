@@ -7,12 +7,12 @@
 Summary:	A Non Linear Movie Editor
 Summary(pl.UTF-8):	Nieliniowy edytor filmów
 Name:		openmovieeditor
-Version:	0.0.20080523
+Version:	0.0.20090105
 Release:	1
 License:	GPL v2
 Group:		Applications/Multimedia
 Source0:	http://dl.sourceforge.net/openmovieeditor/%{name}-%{version}.tar.gz
-# Source0-md5:	8e5eb353c17365d5dd380b4a1f449a04
+# Source0-md5:	ce4f76c0b3e90aabf9c2d5c8dd31e9b1
 Patch0:		%{name}-as-needed.patch
 Patch1:		%{name}-framerate.patch
 URL:		http://openmovieeditor.sourceforge.net/
@@ -26,7 +26,7 @@ BuildRequires:	gavl-devel >= 1.0.0
 BuildRequires:	jack-audio-connection-kit-devel >= 0.101
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
-BuildRequires:	libquicktime-devel >= 1.0.2
+BuildRequires:	libquicktime-devel >= 1.0.0
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	portaudio-devel >= 19
@@ -55,10 +55,8 @@ wystarczająco potężny dla autorów amatorskich filmów, a jednocześnie
 
 %prep
 %setup -q
-%patch0 -p1
-%if %{with ntsc}
-%patch1 -p1
-%endif
+#%%patch0 -p1
+%{?with_ntsc:%patch1 -p1}
 
 %build
 %{__aclocal}
@@ -76,9 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 # icon
-install -d $RPM_BUILD_ROOT%{_pixmapsdir}
-install icons/openmovieeditor.png \
-	$RPM_BUILD_ROOT%{_pixmapsdir}
+install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
+install -p icons/openmovieeditor.png $RPM_BUILD_ROOT%{_pixmapsdir}
 
 # menu-entry
 cat > %{name}.desktop << EOF
@@ -92,7 +89,6 @@ Icon=openmovieeditor.png
 DocPath=
 EOF
 
-install -d $RPM_BUILD_ROOT%{_desktopdir}
 install %{name}.desktop $RPM_BUILD_ROOT%{_desktopdir}
 
 %clean
@@ -101,6 +97,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README TODO doc/images doc/style.css doc/tutorial.html
-%attr(755,root,root) %{_bindir}/*
-%{_pixmapsdir}/openmovieeditor.png
+%attr(755,root,root) %{_bindir}/%{name}
 %{_desktopdir}/%{name}.desktop
+%{_pixmapsdir}/%{name}.png
